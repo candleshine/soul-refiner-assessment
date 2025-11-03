@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '@prisma/client';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, ManageGroupsDto } from '@dtos/users.dto';
 import userService from '@services/users.service';
 
 class UsersController {
@@ -63,7 +63,7 @@ class UsersController {
 
   public manageGroups = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body;
+      const data: ManageGroupsDto = req.body;
       const userId = Number(req.params.id);
       const groupData = await this.userService.manageGroups(userId, data);
 
@@ -71,7 +71,7 @@ class UsersController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }
 
 export default UsersController;

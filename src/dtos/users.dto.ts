@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from 'class-validator';
+import { ArrayNotEmpty, ArrayUnique, IsArray, IsEmail, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -6,4 +6,20 @@ export class CreateUserDto {
 
   @IsString()
   public password: string;
+}
+
+export class ManageGroupsDto {
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsInt({ each: true })
+  public connect?: number[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsInt({ each: true })
+  public disconnect?: number[];
 }

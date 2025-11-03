@@ -61,23 +61,31 @@ class GroupController {
     }
   };
 
-  public joinGroup = async (req, res, next) => {
-    const groupId = Number(req.params.id);
-    const userId = req.body.userId;
+  public joinGroup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const groupId = Number(req.params.id);
+      const userId = req.body.userId;
 
-    const users = await this.groupService.joinGroup(userId, groupId);
+      const users = await this.groupService.joinGroup(userId, groupId);
 
-    res.status(200).json(users)
-  }
+      res.status(200).json(users);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  public leaveGroup = async (req, res, next) => {
-    const groupId = Number(req.params.id);
-    const userId = req.body.userId;
+  public leaveGroup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const groupId = Number(req.params.id);
+      const userId = req.body.userId;
 
-    const users = await this.groupService.leaveGroup(userId, groupId);
+      const users = await this.groupService.leaveGroup(userId, groupId);
 
-    res.status(200).json(users)
-  }
+      res.status(200).json(users);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default GroupController;
