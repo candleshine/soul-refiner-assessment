@@ -1,0 +1,51 @@
+@baseURL = http://localhost:3000
+
+### Get all groups
+GET {{ baseURL }}/groups
+
+### Get group by id
+GET {{ baseURL }}/groups/1
+
+### Create group
+POST {{ baseURL }}/groups
+Content-Type: application/json
+
+{
+  "name": "Weekly Study"
+}
+
+### Update group
+PUT {{ baseURL }}/groups/1
+Content-Type: application/json
+
+{
+  "name": "Weekly Study (Updated)"
+}
+
+### Delete group
+DELETE {{ baseURL }}/groups/2
+
+### Join group
+PUT {{ baseURL }}/groups/join/1
+Content-Type: application/json
+
+{
+  "userId": 1
+}
+### Join group
+PUT {{ baseURL }}/groups/join/1
+Content-Type: application/json
+
+{
+  "userId": 2
+}
+
+
+
+### Leave group
+PUT {{ baseURL }}/groups/leave/1
+Content-Type: application/json
+
+{
+  "userId": 1
+}
