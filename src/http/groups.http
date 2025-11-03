@@ -40,8 +40,6 @@ Content-Type: application/json
   "userId": 2
 }
 
-
-
 ### Leave group
 PUT {{ baseURL }}/groups/leave/1
 Content-Type: application/json

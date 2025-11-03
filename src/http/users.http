@@ -40,3 +40,28 @@ Content-Type: application/json
 ###
 # Delete User By Id
 DELETE {{ baseURL }}/users/1
+
+###
+# Manage user groups (adjust nested operations as needed)
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "groups": {
+    "create": [
+      {
+        "group": { "connect": { "id": 1 } }
+      }
+    ]
+  }
+}
+
+### Problematic use of manageGroups
+# This will fail because the nested create operation expects a group object, not a group ID
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "password": "hacked password",
+  "email": "hacked@example.com"
+}
