@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import GroupsController from '@controllers/groupe.controller';
+import GroupsController from '@/controllers/groups.controller';
 import { CreateGroupDto } from '@dtos/group.dto';
 import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
