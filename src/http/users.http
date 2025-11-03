@@ -18,7 +18,15 @@ Content-Type: application/json
     "email": "example@email.com",
 	"password": "password"
 }
+###
+# Create Second User
+POST {{ baseURL }}/users
+Content-Type: application/json
 
+{
+    "email": "second@example.com",
+	"password": "password"
+}
 ###
 # Modify User By Id
 PUT {{ baseURL }}/users/1
