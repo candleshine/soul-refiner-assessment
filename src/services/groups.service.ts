@@ -54,9 +54,21 @@ class GroupService {
       where: { id: groupId },
       data: {
         users: {
-          create: [
+          connectOrCreate: [
             {
-              user_id: userId,
+              where: {
+                user_id_group_id: {
+                  group_id: groupId,
+                  user_id: userId,
+                },
+              },
+              create: {
+                user: {
+                  connect: {
+                    id: userId,
+                  },
+                },
+              },
             },
           ],
         },
