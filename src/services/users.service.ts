@@ -61,7 +61,11 @@ class UserService {
   }
 
   public async manageGroups(userId: number, groupsData: ManageGroupsDto) {
+    if (isEmpty(userId)) throw new HttpException(400, 'UserId is empty');
     if (isEmpty(groupsData)) throw new HttpException(400, "Groups don't exist");
+
+    const findUser = await this.users.findUnique({ where: { id: userId }, select: { id: true } });
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     const connectIds = groupsData.connect ?? [];
     const disconnectIds = groupsData.disconnect ?? [];
