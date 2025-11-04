@@ -12,28 +12,28 @@ class GroupService {
   }
 
   public async findGroupById(groupId: number): Promise<Group> {
-    if (isEmpty(groupId)) throw new HttpException(400, "groupId is empty");
+    if (isEmpty(groupId)) throw new HttpException(400, 'groupId is empty');
 
-    const findGroup = await this.group.findUnique({ where: { id: groupId }});
+    const findGroup = await this.group.findUnique({ where: { id: groupId } });
     if (!findGroup) throw new HttpException(409, "Group doesn't exist");
 
     return findGroup;
   }
 
   public async createGroup(GroupData: CreateGroupDto): Promise<Group> {
-    if (isEmpty(GroupData)) throw new HttpException(400, "GroupData is empty");
+    if (isEmpty(GroupData)) throw new HttpException(400, 'GroupData is empty');
 
-    const createGroupData: Group = await this.group.create({ data: { ...GroupData, }});
+    const createGroupData: Group = await this.group.create({ data: { ...GroupData } });
     return createGroupData;
   }
 
   public async updateGroup(groupId: number, GroupData: CreateGroupDto): Promise<Group> {
-    if (isEmpty(GroupData)) throw new HttpException(400, "GroupData is empty");
+    if (isEmpty(GroupData)) throw new HttpException(400, 'GroupData is empty');
 
     const findGroup = await this.group.findUnique({ where: { id: groupId } });
     if (!findGroup) throw new HttpException(409, "Group doesn't exist");
 
-    const updateGroupData = await this.group.update({ where: { id: groupId }, data: { ...GroupData, }});
+    const updateGroupData = await this.group.update({ where: { id: groupId }, data: { ...GroupData } });
     return updateGroupData;
   }
 
@@ -56,14 +56,14 @@ class GroupService {
         users: {
           create: [
             {
-              user_id: userId
-            }
-          ]
-        }
+              user_id: userId,
+            },
+          ],
+        },
       },
       select: {
-        users: true
-      }
+        users: true,
+      },
     });
 
     return joinGroupData;
@@ -79,15 +79,15 @@ class GroupService {
           delete: {
             user_id_group_id: {
               group_id: groupId,
-              user_id: userId
-            }
-          }
-        }
+              user_id: userId,
+            },
+          },
+        },
       },
       select: {
-        users: true
-      }
-    })
+        users: true,
+      },
+    });
 
     return leaveGroupData;
   }

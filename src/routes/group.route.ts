@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import GroupsController from '@/controllers/groups.controller';
-import { CreateGroupDto } from '@dtos/group.dto';
+import { CreateGroupDto, GroupMembershipDto } from '@dtos/group.dto';
 import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 
@@ -19,8 +19,8 @@ class GroupsRoute implements Routes {
     this.router.post(`${this.path}`, validationMiddleware(CreateGroupDto, 'body'), this.groupsController.createGroup);
     this.router.put(`${this.path}/:id(\\d+)`, validationMiddleware(CreateGroupDto, 'body', true), this.groupsController.updateGroup);
     this.router.delete(`${this.path}/:id(\\d+)`, this.groupsController.deleteGroup);
-    this.router.put(`${this.path}/join/:id(\\d+)`, this.groupsController.joinGroup);
-    this.router.put(`${this.path}/leave/:id(\\d+)`, this.groupsController.leaveGroup);
+    this.router.put(`${this.path}/join/:id(\\d+)`, validationMiddleware(GroupMembershipDto, 'body'), this.groupsController.joinGroup);
+    this.router.put(`${this.path}/leave/:id(\\d+)`, validationMiddleware(GroupMembershipDto, 'body'), this.groupsController.leaveGroup);
   }
 }
 
