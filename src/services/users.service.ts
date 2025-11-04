@@ -6,6 +6,7 @@ import { isEmpty } from '@utils/util';
 
 class UserService {
   public users = new PrismaClient().user;
+  public groups = new PrismaClient().group;
 
   public async findAllUser(): Promise<Omit<User, 'password'>[]> {
     const allUser: Omit<User, 'password'>[] = await this.users.findMany({ select: { email: true, id: true } });
@@ -78,6 +79,14 @@ class UserService {
     const updateData: any = { groups: {} };
 
     if (connectIds.length > 0) {
+      const existingGroups = await this.groups.findMany({ where: { id: { in: connectIds } }, select: { id: true } });
+      const existingGroupIds = new Set(existingGroups.map(group => group.id));
+      const missingGroupIds = connectIds.filter(id => !existingGroupIds.has(id));
+
+      if (missingGroupIds.length > 0) {
+        throw new HttpException(409, `Group(s) don't exist: ${missingGroupIds.join(', ')}`);
+      }
+
       updateData.groups.connectOrCreate = connectIds.map(id => ({
         where: {
           user_id_group_id: {
