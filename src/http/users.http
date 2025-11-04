@@ -18,7 +18,15 @@ Content-Type: application/json
     "email": "example@email.com",
 	"password": "password"
 }
+###
+# Create Second User
+POST {{ baseURL }}/users
+Content-Type: application/json
 
+{
+    "email": "second@example.com",
+	"password": "password"
+}
 ###
 # Modify User By Id
 PUT {{ baseURL }}/users/1
@@ -32,3 +40,58 @@ Content-Type: application/json
 ###
 # Delete User By Id
 DELETE {{ baseURL }}/users/1
+
+###
+# [REPAIRED - SHOULD NO LONGER WORK] Old manage groups format (nested Prisma operations)
+# This format is no longer accepted after validation was added
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "groups": {
+    "create": [
+      {
+        "group": { "connect": { "id": 1 } }
+      }
+    ]
+  }
+}
+
+###
+# [REPAIRED - SHOULD NO LONGER WORK] Problematic use of manageGroups
+# This will fail validation because password/email are not allowed in ManageGroupsDto
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "password": "hacked password",
+  "email": "hacked@example.com"
+}
+
+###
+# Manage Groups - Add user to groups
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "connect": [1, 2, 3]
+}
+
+###
+# Manage Groups - Remove user from groups
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "disconnect": [2, 3]
+}
+
+###
+# Manage Groups - Add and remove groups simultaneously
+PUT {{ baseURL }}/users/manageGroups/1
+Content-Type: application/json
+
+{
+  "connect": [4, 5],
+  "disconnect": [1]
+}
