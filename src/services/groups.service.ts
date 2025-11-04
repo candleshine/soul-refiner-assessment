@@ -4,7 +4,9 @@ import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 
 class GroupService {
-  public group = new PrismaClient().group;
+  private prisma = new PrismaClient();
+  public group = this.prisma.group;
+  public user = this.prisma.user;
 
   public async findAllGroup(): Promise<Group[]> {
     const allGroup: Group[] = await this.group.findMany();
@@ -49,6 +51,12 @@ class GroupService {
 
   public async joinGroup(userId: number, groupId: number) {
     if (isEmpty(groupId) || isEmpty(userId)) throw new HttpException(400, "Group doesn't existId");
+
+    const group = await this.group.findUnique({ where: { id: groupId }, select: { id: true } });
+    if (!group) throw new HttpException(409, "Group doesn't exist");
+
+    const user = await this.user.findUnique({ where: { id: userId }, select: { id: true } });
+    if (!user) throw new HttpException(409, "User doesn't exist");
 
     const joinGroupData = await this.group.update({
       where: { id: groupId },
